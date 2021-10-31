@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+    nginx:
+        build:
+            context: ./nginx
+            dockerfile: Nginx.Dockerfile
+        ports:
+            - "$NGINX_HTTP_PORT:80"
+            - "$NGINX_HTTPS_PORT:443"
+        depends_on:
+            - php-fpm
+        volumes:
+            - ..:/var/www:delegated
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+            - ./nginx/sites/default.conf:/etc/nginx/sites-available/default.conf
+            - ./nginx/conf.d:/etc/nginx/conf.d
+            - ./logs:/var/log
+    php-fpm:
+        build:
+            context: ./php-fpm
+            dockerfile: Fpm.Dockerfile
+        volumes:
+            - ../:/var/www:delegated
+        depends_on:
+            - mysql
+
+    mysql:
+        image: mysql:8.0
+        volumes:
+            - mysqldata:/var/lib/mysql
+        ports:
+            - "33061:3306"
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
+volumes:
+    mysqldata:
