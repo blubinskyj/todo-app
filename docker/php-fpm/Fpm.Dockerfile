@@ -32,6 +32,16 @@ RUN addgroup www-data root
 
 COPY www.conf /usr/local/etc/php-fpm.d
 
+ARG PHP_UID
+
+ARG PHP_GID
+
+RUN groupadd -g $PHP_GID docker-default
+
+RUN useradd docker-default -u $PHP_UID -g $PHP_GID
+
+USER docker-default
+
 WORKDIR /var/www
 
 CMD php-fpm -R

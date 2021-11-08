@@ -20,6 +20,9 @@ services:
         build:
             context: ./php-fpm
             dockerfile: Fpm.Dockerfile
+            args:
+                - PHP_UID=${PHP_UID}
+                - PHP_GID=${PHP_GID}
         volumes:
             - ../:/var/www:delegated
         depends_on:
@@ -34,7 +37,7 @@ services:
         environment:
             - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
             - MYSQL_DATABASE=${MYSQL_DATABASE}
-    
+
     nodejs:
         build:
             context: ./nodejs
