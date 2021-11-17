@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::group(['middleware' => ['auth']], function (){
+    Route::get('/todo-lists/create', [\App\Http\Controllers\TodoListController::class,'create'])->name('todoLists.create');
+});
+
+
 
 Route::get('/', function () {
     return view('welcome');
