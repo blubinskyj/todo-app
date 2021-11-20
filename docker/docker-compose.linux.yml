@@ -21,12 +21,17 @@ services:
             context: ./php-fpm
             dockerfile: Fpm.Dockerfile
             args:
-                - PHP_UID=${PHP_UID}
-                - PHP_GID=${PHP_GID}
+              - PHP_UID=${PHP_UID}
+              - PHP_GID=${PHP_GID}
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
         volumes:
             - ../:/var/www:delegated
         depends_on:
             - mysql
+        environment:
+            - PHP_UID=${PHP_UID}
+            - PHP_GID=${PHP_GID}
 
     mysql:
         image: mysql:8.0
