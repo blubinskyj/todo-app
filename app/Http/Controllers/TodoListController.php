@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTodoListRequest;
+use App\Models\TodoList;
 use Illuminate\Http\Request;
 
 class TodoListController extends Controller
@@ -13,7 +15,11 @@ class TodoListController extends Controller
      */
     public function index()
     {
-        //
+        $todoLists = TodoList::where('user_id', \Auth::user()->id)->get();
+        return view('todo-list.index', [
+            'todoLists'=>$todoLists
+        ]);
+
     }
 
     /**
@@ -32,9 +38,11 @@ class TodoListController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreTodoListRequest $request)
     {
-        //
+        $data = $request->validated();
+        TodoList::create(array_merge($data, ['user_id'=>\Auth::user()->id]));
+        return redirect()->route('todoLists.index');
     }
 
     /**
@@ -79,6 +87,7 @@ class TodoListController extends Controller
      */
     public function destroy($id)
     {
-        //
+        TodoList::where('id',$id)->delete();
+        return redirect()->route('todoLists.index');
     }
 }
