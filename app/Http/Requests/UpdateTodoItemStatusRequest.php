@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Models\TodoItem;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTodoListRequest extends FormRequest
+class UpdateTodoItemStatusRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +25,7 @@ class StoreTodoListRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'max:255']
+            'status' => ['required']
         ];
     }
 }

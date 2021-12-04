@@ -13,14 +13,21 @@
             @foreach($todoLists as $todoList)
                 <div class="mb-2 bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <p class="text-4xl text-center">{{ $todoList->name }}</p>
-                    <a class="bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" href="{{ route('todoLists.edit', ['id' => $todoList->id]) }}">Edit</a>
-                    <form class="inline-block" method="post" action=" {{route('todoLists.edit', ['id' => $todoList->id])}} ">
+                    <p class="text-4xl text-center">Created at: {{ $todoList->created_at }}</p>
+                    <a
+                        class="bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                        href="{{ route('todoItems.index', ['todoList' => $todoList->id]) }}">Todo items</a>
+                    <a
+                        class="bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                        href="{{ route('todoLists.edit', ['todoList' => $todoList->id]) }}">Edit</a>
+                    <form class="inline-block" method="post" action=" {{ route('todoLists.destroy', ['todoList' => $todoList->id]) }} ">
                         @csrf
                         @method('DELETE')
                         <button class="bg-red-500 text-white active:bg-red-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150">Delete</button>
                     </form>
                 </div>
             @endforeach
+            {{ $todoLists->links() }}
         </div>
     </div>
 </x-app-layout>

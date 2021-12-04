@@ -15,4 +15,9 @@ class TodoList extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function todoItems()
+    {
+        return $this->hasMany(TodoItem::class);
+    }
 }

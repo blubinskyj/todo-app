@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TodoItemController;
 use App\Http\Controllers\TodoListController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,33 +14,28 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::group(['middleware' => ['auth']], function (){
-    Route::group(['prefix' => 'todo-lists', 'as' => 'todoLists'], function (){
-        Route::get('', [TodoListController::class,'index'])->name('.index');
-        Route::get('/create', [TodoListController::class,'create'])->name('.create');
-        Route::post('', [TodoListController::class,'store'])->name('.store');
-        Route::get('/{id}', [TodoListController::class,'show'])->name('.show');
-        Route::get('/{id}', [TodoListController::class,'edit'])->name('.edit');
-        Route::patch('/{id}', [TodoListController::class,'update'])->name('.update');
-        Route::delete('/{id}', [TodoListController::class,'destroy'])->name('.destroy');
-    });
-});
-
-
+require __DIR__ . '/auth.php';
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
-require __DIR__.'/auth.php';
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
-require __DIR__.'/auth.php';
+Route::group(['middleware' => ['auth']], function () {
+    Route::group(['prefix' => 'todo-lists', 'as' => 'todoLists'], function () {
+        Route::get('', [TodoListController::class, 'index'])->name('.index');
+        Route::get('/create', [TodoListController::class, 'create'])->name('.create');
+        Route::post('', [TodoListController::class, 'store'])->name('.store');
+        Route::get('/{todoList}', [TodoListController::class, 'edit'])->name('.edit');
+        Route::patch('/{todoList}', [TodoListController::class, 'update'])->name('.update');
+        Route::delete('/{todoList}', [TodoListController::class, 'destroy'])->name('.destroy');
+    });
+    Route::group(['prefix' => 'todo-lists/{todoList}/todo-items', 'as' => 'todoItems'], function () {
+        Route::get('', [TodoItemController::class, 'index'])->name('.index');
+        Route::get('/create', [TodoItemController::class, 'create'])->name('.create');
+        Route::post('', [TodoItemController::class, 'store'])->name('.store');
+        Route::get('/{todoItem}', [TodoItemController::class, 'edit'])->name('.edit');
+        Route::patch('/{todoItem}', [TodoItemController::class, 'update'])->name('.update');
+        Route::patch('/{todoItem}/status', [TodoItemController::class, 'updateStatus'])->name('.updateStatus');
+        Route::delete('/{todoItem}', [TodoItemController::class, 'destroy'])->name('.destroy');
+    });
+});
