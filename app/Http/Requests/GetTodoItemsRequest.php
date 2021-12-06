@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\TodoItem;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTodoItemStatusRequest extends FormRequest
+class GetTodoItemsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +24,8 @@ class UpdateTodoItemStatusRequest extends FormRequest
     public function rules()
     {
         return [
-            'status' => ['required', 'in:' . implode(',', [TodoItem::STATUS_IN_PROGRESS, TodoItem::STATUS_DONE, TodoItem::STATUS_CANCELLED])]
+            'sortField' => ['sometimes', 'in:text,status,created_at'],
+            'sortOrder' => ['sometimes', 'in:asc,desc']
         ];
     }
 }

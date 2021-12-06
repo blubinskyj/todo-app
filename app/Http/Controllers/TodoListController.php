@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreTodoListRequest;
 use App\Http\Requests\UpdateTodoListRequest;
 use App\Models\TodoList;
-use Illuminate\Http\Request;
 
 class TodoListController extends Controller
 {
@@ -43,6 +42,7 @@ class TodoListController extends Controller
     {
         $data = $request->validated();
         TodoList::create(array_merge($data, ['user_id' => \Auth::user()->id]));
+        $request->session()->flash('userActionMessage', 'Todo list successfully created');
         return redirect()->route('todoLists.index');
     }
 
@@ -69,6 +69,7 @@ class TodoListController extends Controller
     public function update(UpdateTodoListRequest $request, TodoList $todoList)
     {
         $todoList->update($request->validated());
+        $request->session()->flash('userActionMessage', 'Todo list successfully updated');
         return redirect()->route('todoLists.index');
     }
 
@@ -82,6 +83,7 @@ class TodoListController extends Controller
     {
         abort_if(\Auth::user()->cannot('delete', $todoList), 403);
         $todoList->delete();
+        session()->flash('userActionMessage', 'Todo list successfully deleted');
         return redirect()->route('todoLists.index');
     }
 }
