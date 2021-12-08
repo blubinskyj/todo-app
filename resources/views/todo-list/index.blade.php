@@ -12,7 +12,7 @@
         <div class="max-w-md mx-auto sm:px-6 lg:px-8">
             <div class="mb-2 bg-white overflow-hidden shadow-sm sm:rounded-lg text-blue-600">{{ Session::get('userActionMessage') }}</div>
             @foreach($todoLists as $todoList)
-                <div class="mb-2 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="mb-2 bg-white overflow-hidden shadow-sm sm:rounded-lg space-x-8">
                     <p class="text-4xl text-center">{{ $todoList->name }}</p>
                     <p class="text-1xl text-center">Created at: {{ $todoList->created_at }}</p>
                     <a

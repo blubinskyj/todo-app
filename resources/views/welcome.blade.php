@@ -35,7 +35,7 @@
                     @endauth
                 </div>
             @endif
-            <p>Hello on todo list</p>
+            <p style="font-size: 32px">Hello on todo list</p>
         </div>
 
     </body>
